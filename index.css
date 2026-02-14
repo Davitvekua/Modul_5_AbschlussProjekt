@@ -10,7 +10,7 @@ body {
   flex-direction: row;
   --button-color: rgb(249, 70, 237);
   --button-color-hover: rgb(246, 149, 239);
-  --button-color-hover1: rgb(246, 235, 245);
+  --button-color-hover1: rgb(247, 210, 244);
   --font-family: "Poppins", sans-serif;
   height: 100vh;
 }
@@ -123,4 +123,8 @@ body {
   display: flex;
   flex-direction: column-reverse;
   justify-content: flex-end;
+}
+
+.purple {
+  background-color: var(--button-color-hover1);
 }
