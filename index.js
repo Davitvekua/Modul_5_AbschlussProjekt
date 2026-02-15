@@ -26,7 +26,6 @@ function saveNote() {
   } else {
     dateNote = new Date();
     noteId += 1;
-
     note = {
       NoteTitle: noteTitleEl,
       NoteContent: textareaEl,
@@ -36,10 +35,19 @@ function saveNote() {
 
     notesArray.push(note);
 
-    let noteLast = notesArray[notesArray.length - 1];
+    let noteFirst = notesArray[notesArray.length - 1];
 
-    createNote(noteLast);
-    deleteNote();
+    createNote(noteFirst);
+
+    notesArray = notesArray.filter((removeNote) => {
+      return removeNote.Id !== Number(currentId);
+    });
+
+    localStorage.setItem("Notes:", JSON.stringify(notesArray));
+
+    document.querySelectorAll(".purple").forEach((el) => {
+      el.remove();
+    });
   }
 
   document.getElementById("inputTitleId").value = "";
