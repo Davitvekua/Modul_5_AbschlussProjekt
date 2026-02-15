@@ -26,6 +26,7 @@ function saveNote() {
   } else {
     dateNote = new Date();
     noteId += 1;
+
     note = {
       NoteTitle: noteTitleEl,
       NoteContent: textareaEl,
@@ -34,27 +35,11 @@ function saveNote() {
     };
 
     notesArray.push(note);
-    notesArray.sort((a, b) => {
-      if (a.LastUpdate > b.LastUpdate) {
-        return -1;
-      } else {
-        return 1;
-      }
-    });
 
-    let noteFirst = notesArray[0];
+    let noteLast = notesArray[notesArray.length - 1];
 
-    createNote(noteFirst);
-
-    notesArray = notesArray.filter((removeNote) => {
-      return removeNote.Id !== Number(currentId);
-    });
-
-    localStorage.setItem("Notes:", JSON.stringify(notesArray));
-
-    document.querySelectorAll(".purple").forEach((el) => {
-      el.remove();
-    });
+    createNote(noteLast);
+    deleteNote();
   }
 
   document.getElementById("inputTitleId").value = "";
@@ -67,22 +52,18 @@ function reloadRender() {
     notesArray = [];
   }
 
-  notesArray.sort((a, b) => {
-    if (a.LastUpdate > b.LastUpdate) {
-      return 1;
-    } else {
-      return -1;
-    }
-  });
-
   notesArray.forEach(createNote);
 
-  noteId = notesArray[notesArray.length - 1].Id;
+  if (notesArray.length === 0) {
+    noteId = 0;
+  } else {
+    noteId = notesArray[notesArray.length - 1].Id;
+  }
 }
 
 document.addEventListener("DOMContentLoaded", reloadRender);
 
-// erstelle ein funktion, die erkennen kann auf welche element geklickt wird
+// erstellen wir ein funktion, das erkennen kann auf welche element geklickt wird
 
 function clickHandler(a) {
   currentId = a;
@@ -100,4 +81,28 @@ function clickHandler(a) {
   });
 
   currentNote.classList.add("purple");
+}
+
+// erstellen wir ein funktion, das markierte elemente löschen kann
+
+function deleteNote() {
+  if (currentId == null || document.getElementById(currentId) == null) {
+    return;
+  } else {
+    document.getElementById(currentId).remove();
+    notesArray = notesArray.filter((removeNote) => {
+      return removeNote.Id !== Number(currentId);
+    });
+    localStorage.setItem("Notes:", JSON.stringify(notesArray));
+    document.getElementById("inputTitleId").value = "";
+    document.getElementById("textareaId").value = "";
+  }
+}
+
+function newNote() {
+  document.getElementById("inputTitleId").value = "";
+  document.getElementById("textareaId").value = "";
+  currentId = null;
+
+  document.querySelector(".purple").classList.remove("purple");
 }
