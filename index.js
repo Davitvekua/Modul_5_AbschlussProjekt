@@ -111,6 +111,5 @@ function newNote() {
   document.getElementById("inputTitleId").value = "";
   document.getElementById("textareaId").value = "";
   currentId = null;
-
   document.querySelector(".purple").classList.remove("purple");
 }
