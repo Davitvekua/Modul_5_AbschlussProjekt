@@ -125,6 +125,6 @@ body {
   justify-content: flex-end;
 }
 
-.selectedNote {
+.purple {
   background-color: var(--button-color-hover1);
 }
