@@ -9,10 +9,10 @@ let note;
 let currentId;
 
 function createNote(note) {
-  noteListEl.innerHTML += `<div class="note-entry" id="${note.id}" onclick="clickHandler('${note.id}')" >
-          <div class="note-title" >${note.noteTitle}</div>
-          <div class="note-content-teaser" >${note.noteContent}</div>
-          <div class="note-date">${new Date(note.lastUpdate).toLocaleString()}</div>
+  noteListEl.innerHTML += `<div class="note-entry" id="${note.Id}" onclick="clickHandler('${note.Id}')" >
+          <div class="note-title" >${note.NoteTitle}</div>
+          <div class="note-content-teaser" >${note.NoteContent}</div>
+          <div class="note-date">${new Date(note.LastUpdate).toLocaleString()}</div>
         </div>`;
 }
 
@@ -27,23 +27,25 @@ function saveNote() {
     dateNote = new Date();
     noteId += 1;
     note = {
-      noteTitle: noteTitleEl,
-      noteContent: textareaEl,
-      lastUpdate: dateNote.getTime(),
-      id: noteId,
+      NoteTitle: noteTitleEl,
+      NoteContent: textareaEl,
+      LastUpdate: dateNote.getTime(),
+      Id: noteId,
     };
 
     notesArray.push(note);
 
-    createNote(note);
+    let noteFirst = notesArray[notesArray.length - 1];
+
+    createNote(noteFirst);
 
     notesArray = notesArray.filter((removeNote) => {
-      return removeNote.id !== Number(currentId);
+      return removeNote.Id !== Number(currentId);
     });
 
-    localStorage.setItem("notes", JSON.stringify(notesArray));
+    localStorage.setItem("Notes:", JSON.stringify(notesArray));
 
-    document.querySelectorAll(".selectedNote").forEach((el) => {
+    document.querySelectorAll(".purple").forEach((el) => {
       el.remove();
     });
   }
@@ -53,7 +55,7 @@ function saveNote() {
 }
 
 function reloadRender() {
-  notesArray = JSON.parse(localStorage.getItem("notes"));
+  notesArray = JSON.parse(localStorage.getItem("Notes:"));
   if (notesArray === null) {
     notesArray = [];
   }
@@ -63,7 +65,7 @@ function reloadRender() {
   if (notesArray.length === 0) {
     noteId = 0;
   } else {
-    noteId = note.id;
+    noteId = notesArray[notesArray.length - 1].Id;
   }
 }
 
@@ -71,9 +73,9 @@ document.addEventListener("DOMContentLoaded", reloadRender);
 
 // erstellen wir ein funktion, das erkennen kann auf welche element geklickt wird
 
-function clickHandler(currentElId) {
-  currentId = currentElId;
-  let currentNote = document.getElementById(currentElId);
+function clickHandler(a) {
+  currentId = a;
+  let currentNote = document.getElementById(a);
   let currentTitle = currentNote.querySelector(".note-title").innerHTML;
   let currentTeaser = currentNote.querySelector(
     ".note-content-teaser",
@@ -82,11 +84,11 @@ function clickHandler(currentElId) {
   document.getElementById("inputTitleId").value = currentTitle;
   document.getElementById("textareaId").value = currentTeaser;
 
-  document.querySelectorAll(".selectedNote").forEach((el) => {
-    el.classList.remove("selectedNote");
+  document.querySelectorAll(".purple").forEach((el) => {
+    el.classList.remove("purple");
   });
 
-  currentNote.classList.add("selectedNote");
+  currentNote.classList.add("purple");
 }
 
 // erstellen wir ein funktion, das markierte elemente löschen kann
@@ -97,9 +99,9 @@ function deleteNote() {
   } else {
     document.getElementById(currentId).remove();
     notesArray = notesArray.filter((removeNote) => {
-      return removeNote.id !== Number(currentId);
+      return removeNote.Id !== Number(currentId);
     });
-    localStorage.setItem("notes", JSON.stringify(notesArray));
+    localStorage.setItem("Notes:", JSON.stringify(notesArray));
     document.getElementById("inputTitleId").value = "";
     document.getElementById("textareaId").value = "";
   }
@@ -109,5 +111,5 @@ function newNote() {
   document.getElementById("inputTitleId").value = "";
   document.getElementById("textareaId").value = "";
   currentId = null;
-  document.querySelector(".selectedNote").classList.remove("selectedNote");
+  document.querySelector(".purple").classList.remove("purple");
 }
