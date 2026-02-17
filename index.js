@@ -10,8 +10,8 @@ let currentId;
 
 function createNote(note) {
   noteListEl.innerHTML += `<div class="note-entry" id="${note.Id}" onclick="clickHandler('${note.Id}')" >
-          <div class="note-title" >${note.NoteTitle}</div>
-          <div class="note-content-teaser" >${note.NoteContent}</div>
+          <div class="note-title" >${escapeHtml(note.NoteTitle)}</div>
+          <div class="note-content-teaser" >${escapeHtml(note.NoteContent)}</div>
           <div class="note-date">${new Date(note.LastUpdate).toLocaleString()}</div>
         </div>`;
 }
@@ -113,3 +113,14 @@ function newNote() {
   currentId = null;
   document.querySelector(".purple").classList.remove("purple");
 }
+
+function escapeHtml(unsafe) {
+  return unsafe
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+escapeHtml();
