@@ -7,6 +7,7 @@ let dateNote;
 let noteId = 0;
 let note;
 let currentId;
+let correntColor = "white";
 
 function createNote(note) {
   noteListEl.innerHTML += `<div class="note-entry" id="${note.Id}" onclick="clickHandler('${note.Id}')" >
@@ -14,6 +15,8 @@ function createNote(note) {
           <div class="note-content-teaser" >${escapeHtml(note.NoteContent)}</div>
           <div class="note-date">${new Date(note.LastUpdate).toLocaleString()}</div>
         </div>`;
+
+  document.getElementById(note.Id).classList.add(note.Color);
 }
 
 function saveNote() {
@@ -31,6 +34,7 @@ function saveNote() {
       NoteContent: textareaEl,
       LastUpdate: dateNote.getTime(),
       Id: noteId,
+      Color: correntColor,
     };
 
     notesArray.push(note);
@@ -38,6 +42,8 @@ function saveNote() {
     let noteFirst = notesArray[notesArray.length - 1];
 
     createNote(noteFirst);
+
+    document.getElementById(noteId).classList.add(correntColor);
 
     notesArray = notesArray.filter((removeNote) => {
       return removeNote.Id !== Number(currentId);
@@ -50,6 +56,10 @@ function saveNote() {
     });
   }
 
+  document.querySelectorAll(".hook").forEach((el) => {
+    el.classList.add("hidden");
+  });
+  correntColor = "white";
   document.getElementById("inputTitleId").value = "";
   document.getElementById("textareaId").value = "";
 }
@@ -123,4 +133,15 @@ function escapeHtml(unsafe) {
     .replace(/'/g, "&#039;");
 }
 
-escapeHtml();
+function colorSelector(selectedElId) {
+  document.querySelectorAll(".hook").forEach((el) => {
+    el.classList.add("hidden");
+  });
+  document
+    .getElementById(selectedElId)
+    .querySelector(".hook")
+    .classList.remove("hidden");
+
+  correntColor = selectedElId;
+  console.log(correntColor);
+}

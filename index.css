@@ -10,7 +10,7 @@ body {
   flex-direction: row;
   --button-color: rgb(249, 70, 237);
   --button-color-hover: rgb(246, 149, 239);
-  --button-color-hover1: rgb(247, 210, 244);
+  --button-color-hover1: rgb(207, 196, 204);
   --font-family: "Poppins", sans-serif;
   height: 100vh;
 }
@@ -83,15 +83,15 @@ body {
 
 .note-date {
   text-align: right;
-  color: gray;
+  color: black;
   padding: 0 1rem 1rem 0;
 }
 .note-content-teaser {
-  color: gray;
+  color: black;
   padding: 1rem;
 }
 .textarea {
-  width: 100%;
+  width: 93%;
   height: 80vh;
   border: none;
   font-size: 1.5rem;
@@ -127,4 +127,50 @@ body {
 
 .purple {
   background-color: var(--button-color-hover1);
+}
+
+.textareaAndButtonsContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.colorButtonsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin: 1rem 0 0 1rem;
+}
+
+.colorButtons {
+  padding: 0.8rem 0.8rem;
+  border-radius: 50%;
+}
+
+.hook {
+  width: 1.75rem;
+  height: 1.5rem;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.colorButtons:hover {
+  filter: brightness(80%);
+}
+
+.red {
+  background-color: red;
+}
+.green {
+  background-color: green;
+}
+
+.orange {
+  background-color: orange;
+}
+
+.white {
+  background-color: white;
 }
