@@ -125,7 +125,7 @@ body {
   justify-content: flex-end;
 }
 
-.purple {
+.markedColor {
   background-color: var(--button-color-hover1);
 }
 
@@ -173,4 +173,14 @@ body {
 
 .white {
   background-color: white;
+}
+
+#selectColor {
+  font-weight: 600;
+  font-size: 1.4rem;
+  border-radius: 5px;
+  text-align: center;
+  width: 100%;
+  margin-top: 1rem;
+  border: 2px solid;
 }

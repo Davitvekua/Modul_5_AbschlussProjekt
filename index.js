@@ -8,6 +8,7 @@ let noteId = 0;
 let note;
 let currentId;
 let correntColor = "white";
+let colorCurrentValue;
 
 function createNote(note) {
   noteListEl.innerHTML += `<div class="note-entry" id="${note.Id}" onclick="clickHandler('${note.Id}')" >
@@ -43,15 +44,13 @@ function saveNote() {
 
     createNote(noteFirst);
 
-    document.getElementById(noteId).classList.add(correntColor);
-
     notesArray = notesArray.filter((removeNote) => {
       return removeNote.Id !== Number(currentId);
     });
 
-    localStorage.setItem("Notes:", JSON.stringify(notesArray));
+    localStorage.setItem("Notes", JSON.stringify(notesArray));
 
-    document.querySelectorAll(".purple").forEach((el) => {
+    document.querySelectorAll(".markedColor").forEach((el) => {
       el.remove();
     });
   }
@@ -65,7 +64,9 @@ function saveNote() {
 }
 
 function reloadRender() {
-  notesArray = JSON.parse(localStorage.getItem("Notes:"));
+  noteListEl.innerHTML = "";
+
+  notesArray = JSON.parse(localStorage.getItem("Notes"));
   if (notesArray === null) {
     notesArray = [];
   }
@@ -84,7 +85,21 @@ document.addEventListener("DOMContentLoaded", reloadRender);
 // erstellen wir ein funktion, das erkennen kann auf welche element geklickt wird
 
 function clickHandler(a) {
+  document.querySelectorAll(".hook").forEach((el) => {
+    el.classList.add("hidden");
+  });
+
   currentId = a;
+
+  let currentElColor = notesArray.find((el) => {
+    return el.Id == currentId;
+  }).Color;
+
+  document
+    .getElementById(currentElColor)
+    .querySelector(".hook")
+    .classList.remove("hidden");
+
   let currentNote = document.getElementById(a);
   let currentTitle = currentNote.querySelector(".note-title").innerHTML;
   let currentTeaser = currentNote.querySelector(
@@ -94,11 +109,11 @@ function clickHandler(a) {
   document.getElementById("inputTitleId").value = currentTitle;
   document.getElementById("textareaId").value = currentTeaser;
 
-  document.querySelectorAll(".purple").forEach((el) => {
-    el.classList.remove("purple");
+  document.querySelectorAll(".markedColor").forEach((el) => {
+    el.classList.remove("markedColor");
   });
 
-  currentNote.classList.add("purple");
+  currentNote.classList.add("markedColor");
 }
 
 // erstellen wir ein funktion, das markierte elemente löschen kann
@@ -111,17 +126,18 @@ function deleteNote() {
     notesArray = notesArray.filter((removeNote) => {
       return removeNote.Id !== Number(currentId);
     });
-    localStorage.setItem("Notes:", JSON.stringify(notesArray));
+    localStorage.setItem("Notes", JSON.stringify(notesArray));
     document.getElementById("inputTitleId").value = "";
     document.getElementById("textareaId").value = "";
   }
 }
 
 function newNote() {
+  reloadRender();
   document.getElementById("inputTitleId").value = "";
   document.getElementById("textareaId").value = "";
   currentId = null;
-  document.querySelector(".purple").classList.remove("purple");
+  document.querySelector(".markedColor").classList.remove("markedColor");
 }
 
 function escapeHtml(unsafe) {
@@ -145,3 +161,21 @@ function colorSelector(selectedElId) {
   correntColor = selectedElId;
   console.log(correntColor);
 }
+
+function historyColorSelector(event) {
+  noteListEl.innerHTML = "";
+
+  // colorCurrentValue = document.getElementById("selectColor").value;
+
+  colorCurrentValue = event.target.value;
+
+  let arrayByColor = notesArray.filter((selectNote) => {
+    return selectNote.Color === colorCurrentValue;
+  });
+
+  arrayByColor.forEach(createNote);
+}
+
+document
+  .getElementById("selectColor")
+  .addEventListener("change", historyColorSelector);
