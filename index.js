@@ -40,9 +40,7 @@ function saveNote() {
 
     notesArray.push(note);
 
-    let noteFirst = notesArray[notesArray.length - 1];
-
-    createNote(noteFirst);
+    createNote(note);
 
     notesArray = notesArray.filter((removeNote) => {
       return removeNote.Id !== Number(currentId);
